@@ -10,14 +10,15 @@ const getProducts = async () => {
       const prices = await stripe.prices.list({
         product: product.id,
       });
+      const features = product.metadata.features || '';
       return {
         id: product.id,
         name: product.name,
         unit_amount: prices.data[0].unit_amount,
         image: product.images[0],
         currency: prices.data[0].currency,
-        metadata: product.metadata.feature,
         description: product.description,
+        metadata: {features},
       };
     })
   )
@@ -27,8 +28,8 @@ export default async function Home() {
   const products = await getProducts();
 
   return (
-    <main>
-      {products.map((product) => <Product {...product} />)}
+    <main className='grid grid-cols-fluid gap-12'>
+      {products.map((product) => <Product {...product} key={product.id}/>)}
     </main>
   )
 }
