@@ -7,6 +7,7 @@ import {IoAddCircle, IoRemoveCircle} from "react-icons/io5";
 import basket from "@/public/basket.png";
 import {motion} from 'framer-motion';
 
+
 export default function Cart() {
     const cartStore = useCartStore();
     const totalPrice = cartStore.cart.reduce((acc, item) => acc + item.quantity! * item.unit_amount!, 0);
@@ -16,6 +17,8 @@ export default function Cart() {
             <motion.div layout onClick={(e) => e.stopPropagation()} 
             className="bg-white absolute right-0 top-0 h-screen p-12 overflow-y-scroll text-gray-700 w-full lg:w-2/5">
                 <button onClick={() => cartStore.toggleCart()} className="text-sm font-bold pb-12">Back to store 🏃</button>
+                {cartStore.onCheckout === 'cart' &&
+                <>
                 {cartStore.cart.map((item) => (
                     <motion.div layout key={item.id} className="flex py-4 gap-4">
                         <Image className="rounded-md h-24" src={item.image} alt={item.name} width={120} height={120}/>
@@ -30,6 +33,8 @@ export default function Cart() {
                         </motion.div>
                     </motion.div>
                 ))}
+                </>
+                }
                 <motion.div layout>
                     {cartStore.cart.length > 0 && ( 
                     <>
