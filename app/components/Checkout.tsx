@@ -5,6 +5,9 @@ import { Elements } from "@stripe/react-stripe-js";
 import { useCartStore } from "@/store";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import CheckoutForm from "./CheckoutForm";
+import OrderAnimation from "./OrderAnimation";
+import { motion } from "framer-motion";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
@@ -36,9 +39,23 @@ export default function Checkout() {
       });
   }, []);
 
+  const options: StripeElementsOptions = {
+    clientSecret,
+    appearance: {
+      theme: "stripe",
+      labels: "floating",
+    },
+  };
   return (
     <div>
-      <h1>Checkout</h1>
+      {!clientSecret && <OrderAnimation />}
+      {clientSecret && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <Elements options={options} stripe={stripePromise}>
+            <CheckoutForm clientSecret={clientSecret} />
+          </Elements>
+        </motion.div>
+      )}
     </div>
   );
 }
