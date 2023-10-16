@@ -8,13 +8,14 @@ import Cart from "./Cart";
 import { useCartStore } from "@/store";
 import { AiFillShopping } from "react-icons/ai";
 import { AnimatePresence, motion } from "framer-motion";
+import DarkLight from "./DarkLight";
 
 export default function Nav({ user }: Session) {
   const cartStore = useCartStore();
   return (
     <nav className="flex justify-between items-center py-12">
       <Link href={{ pathname: "/" }}>
-        <h1>Styled</h1>
+        <h1 className="font-lobster text-xl">Vincent Store</h1>
       </Link>
       <ul className="flex items-center gap-12">
         <li
@@ -35,6 +36,7 @@ export default function Nav({ user }: Session) {
             )}
           </AnimatePresence>
         </li>
+        {<DarkLight />}
         {!user && (
           <li className="bg-primary text-white py-2 px-4 rounded-md">
             <button onClick={() => signIn()}>Sign In</button>
